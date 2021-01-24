@@ -1410,7 +1410,7 @@ NON_OVLD int GEN_NAME2(shfl_down, i)(int var, unsigned int delta);
 NON_OVLD float GEN_NAME2(shfl_down, f)(float var, unsigned int delta);
 NON_OVLD int GEN_NAME(group_all)(int pred);
 NON_OVLD int GEN_NAME(group_any)(int pred);
-NON_OVLD int GEN_NAME(group_ballot)(int pred);
+NON_OVLD uint64_t GEN_NAME(group_ballot)(int pred);
 }
 
 EXPORT OVLD int __shfl(int var, int srcLane) {
@@ -1439,7 +1439,7 @@ EXPORT OVLD float __shfl_down(float var, unsigned int delta) {
 };
 EXPORT int __all(int predicate) { return GEN_NAME(group_all)(predicate); };
 EXPORT int __any(int predicate) { return GEN_NAME(group_any)(predicate); };
-EXPORT int __ballot(int predicate) { return GEN_NAME(group_ballot)(predicate); };
+EXPORT uint64_t __ballot(int predicate) { return GEN_NAME(group_ballot)(predicate); };
 #else
 
 EXPORT OVLD int __shfl(int var, int srcLane);
@@ -1456,6 +1456,6 @@ EXPORT OVLD float __shfl_down(float var, unsigned int delta);
 
 EXPORT int __all(int predicate);
 EXPORT int __any(int predicate);
-EXPORT int __ballot(int predicate);
+EXPORT uint64_t __ballot(int predicate);
 
 #endif
