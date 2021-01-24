@@ -698,6 +698,22 @@ NON_OVLD void GEN_NAME(local_barrier)();
 }
 EXPORT void __syncthreads() { GEN_NAME(local_barrier)(); }
 
+extern "C" {
+NON_OVLD void GEN_NAME(local_fence)();
+}
+EXPORT void __threadfence_block() { GEN_NAME(local_fence)(); }
+
+extern "C" {
+NON_OVLD void GEN_NAME(global_fence)();
+}
+EXPORT void __threadfence() { GEN_NAME(global_fence)(); }
+
+EXPORT void abort() { volatile union { int * p; size_t s; float f;} v = {.s = 0}; *(v.p) = 1/(int)(v.f); }
+
+EXPORT clock_t clock() { return 0; }
+
+EXPORT unsigned long long clock64() { return 0; }
+
 /**********************************************************************/
 
 #else
@@ -706,6 +722,11 @@ EXPORT float __saturatef(float x);
 EXPORT void __sincosf(float x, float *sptr, float *cptr);
 EXPORT float __fdividef(float x, float y);
 EXPORT void __syncthreads();
+EXPORT void __threadfence_block();
+EXPORT void __threadfence();
+EXPORT void abort();
+EXPORT clock_t clock();
+EXPORT unsigned long long clock64();
 #endif
 
 // NAN/NANF
@@ -1349,6 +1370,8 @@ extern "C" {
 NON_OVLD float GEN_NAME2(atomic_add, f)(float *address, float val);
 NON_OVLD double GEN_NAME2(atomic_add, d)(double *address, double val);
 NON_OVLD float GEN_NAME2(atomic_exch, f)(float *address, float val);
+NON_OVLD unsigned GEN_NAME2(atomic_inc2, u)(unsigned *address, unsigned val);
+NON_OVLD unsigned GEN_NAME2(atomic_dec2, u)(unsigned *address, unsigned val);
 }
 EXPORT float atomicAdd(float *address, float val) {
   return GEN_NAME2(atomic_add, f)(address, val);
@@ -1359,10 +1382,18 @@ EXPORT double atomicAdd(double *address, double val) {
 EXPORT float atomicExch(float *address, float val) {
   return GEN_NAME2(atomic_exch, f)(address, val);
 }
+EXPORT unsigned atomicInc(unsigned *address, unsigned val) {
+  return GEN_NAME2(atomic_inc2, u)(address, val);
+}
+EXPORT unsigned atomicDec(unsigned *address, unsigned val) {
+  return GEN_NAME2(atomic_dec2, u)(address, val);
+}
 #else
 EXPORT float atomicAdd(float *address, float val);
 EXPORT double atomicAdd(double *address, double val);
 EXPORT float atomicExch(float *address, float val);
+EXPORT unsigned atomicInc(unsigned *address, unsigned val);
+EXPORT unsigned atomicDec(unsigned *address, unsigned val);
 #endif
 
 /**********************************************************************/
@@ -1379,6 +1410,7 @@ NON_OVLD int GEN_NAME2(shfl_down, i)(int var, unsigned int delta);
 NON_OVLD float GEN_NAME2(shfl_down, f)(float var, unsigned int delta);
 NON_OVLD int GEN_NAME(group_all)(int pred);
 NON_OVLD int GEN_NAME(group_any)(int pred);
+NON_OVLD int GEN_NAME(group_ballot)(int pred);
 }
 
 EXPORT OVLD int __shfl(int var, int srcLane) {
@@ -1407,6 +1439,7 @@ EXPORT OVLD float __shfl_down(float var, unsigned int delta) {
 };
 EXPORT int __all(int predicate) { return GEN_NAME(group_all)(predicate); };
 EXPORT int __any(int predicate) { return GEN_NAME(group_any)(predicate); };
+EXPORT int __ballot(int predicate) { return GEN_NAME(group_ballot)(predicate); };
 #else
 
 EXPORT OVLD int __shfl(int var, int srcLane);
@@ -1423,5 +1456,6 @@ EXPORT OVLD float __shfl_down(float var, unsigned int delta);
 
 EXPORT int __all(int predicate);
 EXPORT int __any(int predicate);
+EXPORT int __ballot(int predicate);
 
 #endif
