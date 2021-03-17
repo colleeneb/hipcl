@@ -714,6 +714,17 @@ EXPORT clock_t clock() { return 0; }
 
 EXPORT unsigned long long clock64() { return 0; }
 
+// memory routines
+extern "C" {
+NON_OVLD void* GEN_NAME(memset)(void* ptr, int value, size_t size);
+}
+EXPORT void* memset(void* ptr, int value, size_t size) { return GEN_NAME(memset)(ptr,value,size); }
+
+extern "C" {
+NON_OVLD void* GEN_NAME(memcpy)(void *dest, const void * src, size_t n);
+}
+EXPORT void *memcpy(void *dest, const void * src, size_t n) { return GEN_NAME(memcpy)(dest,src,n); }
+
 /**********************************************************************/
 
 #else
@@ -727,6 +738,8 @@ EXPORT void __threadfence();
 EXPORT void abort();
 EXPORT clock_t clock();
 EXPORT unsigned long long clock64();
+EXPORT void* memset(void* ptr, int value, size_t size);
+EXPORT void* memcpy(void *dest, const void * src, size_t n);
 #endif
 
 // NAN/NANF
