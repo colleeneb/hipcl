@@ -333,81 +333,22 @@ EXPORT void CL_NAME(global_fence)() { mem_fence(CLK_LOCAL_MEM_FENCE | CLK_GLOBAL
 
 // sets size bytes of the memory pointed to by ptr to value
 // interpret ptr as a unsigned char so that it writes as bytes
-/* static OVLD void* opencl_memset_actual(local void* ptr, int val, size_t size) { */
-/*   local unsigned char* temporary = ptr; */
-
-/*   for(int i=0;i<size;i++) */
-/*     temporary[i] = val; */
-  
-/*     return ptr; */
-/* } */
-/* static OVLD void* opencl_memset_actual(global void* ptr, unsigned char val, size_t size) { */
-
-/*   global unsigned char* temporary = ptr; */
-
-/*   for(int i=0;i<size;i++) */
-/*     temporary[i] = val; */
-  
-/*     return ptr; */
-/* } */
-
-/* static OVLD void* opencl_memcpy_actual(local void* dest,local void* src, size_t size) { */
-/*   local unsigned char* temporary_dest = dest; */
-/*   local unsigned char* temporary_src = src; */
-
-/*   for(int i=0;i<size;i++) */
-/*     temporary_dest[i] = temporary_src[i]; */
-  
-/*     return dest; */
-/* } */
-
-/* static OVLD void* opencl_memcpy_actual(global void* dest,global void* src, size_t size) { */
-/*   global unsigned char* temporary_dest = dest; */
-/*   global unsigned char* temporary_src = src; */
-
-/*   for(int i=0;i<size;i++) */
-/*     temporary_dest[i] = temporary_src[i]; */
-  
-/*     return dest; */
-/* } */
-
 EXPORT void* CL_NAME(memset)(DEFAULT_AS void* ptr, int value, size_t size) {
-  unsigned char* temporary = ptr;
+  volatile unsigned char* temporary = ptr;
 
   for(int i=0;i<size;i++)
-    temporary[i] = val;
+    temporary[i] = value;
   
     return ptr;
-
-  /* global void *gi = to_global((DEFAULT_AS void *)ptr); */
-  /* if (gi) */
-  /*   return opencl_memset_actual(gi, value, size); */
-  /* local void *li = to_local((DEFAULT_AS void *)ptr); */
-  /* if (li) */
-  /*   return opencl_memset_actual(li, value, size); */
-  /* return 0; */
 }
 
 EXPORT void* CL_NAME(memcpy)(DEFAULT_AS void *dest, DEFAULT_AS const void * src, size_t n) {
-  unsigned char* temporary_dest = dest;
-  unsigned char* temporary_src = src;
+  volatile unsigned char* temporary_dest = dest;
+  volatile unsigned char* temporary_src = src;
 
   for(int i=0;i<n;i++)
     temporary_dest[i] = temporary_src[i];
 
-
-  /* global void *gi_dest = to_global((DEFAULT_AS void *)dest); */
-  /* global void *gi_src = to_global((DEFAULT_AS void *)src); */
-  /* local void *li_dest = to_local((DEFAULT_AS void *)dest); */
-  /* local void *li_src = to_local((DEFAULT_AS void *)src); */
-
-  /* if (gi_dest && gi_src) */
-  /*   return opencl_memcpy_actual(gi_dest, gi_src, n); */
-  /* else if (li_dest && li_src ) */
-  /*   return opencl_memcpy_actual(li_dest, li_src, n); */
-  /* else { */
-  /*   printf( "Unsure how to copy memory\n" ); */
-  /* } */
   return dest;
 }
 
