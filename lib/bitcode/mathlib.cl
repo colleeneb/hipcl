@@ -344,7 +344,7 @@ EXPORT void* CL_NAME(memset)(DEFAULT_AS void* ptr, int value, size_t size) {
 
 EXPORT void* CL_NAME(memcpy)(DEFAULT_AS void *dest, DEFAULT_AS const void * src, size_t n) {
   volatile unsigned char* temporary_dest = dest;
-  volatile unsigned char* temporary_src = src;
+  volatile const unsigned char* temporary_src = src;
 
   for(int i=0;i<n;i++)
     temporary_dest[i] = temporary_src[i];
