@@ -49,7 +49,7 @@ if(UNIX AND NOT APPLE AND NOT CYGWIN)
             /opt/hipcl
             ${_IMPORT_PREFIX}
             ENV HIP_PATH
-	    ENV HIPCL_PATH
+            ENV HIPCL_PATH
             DOC "HIPCL installed location"
             NO_DEFAULT_PATH
             )
@@ -72,7 +72,7 @@ if(UNIX AND NOT APPLE AND NOT CYGWIN)
         /opt/hipcl/llvm
         "${HIP_ROOT_DIR}/llvm"
         ENV HIP_PATH
-	ENV HIPCL_PATH
+        ENV HIPCL_PATH
         PATH_SUFFIXES bin
         NO_DEFAULT_PATH
         )
@@ -86,7 +86,7 @@ if(UNIX AND NOT APPLE AND NOT CYGWIN)
         /opt/hipcl
         "${HIP_ROOT_DIR}"
         ENV HIP_PATH
-	ENV HIPCL_PATH
+        ENV HIPCL_PATH
         PATH_SUFFIXES bin
         NO_DEFAULT_PATH
         )
