@@ -82,8 +82,8 @@ endfunction()
 
 
 set(SAMPLES
-     hiplonglong
-     hipmath
+    hiplonglong
+    hipmath
     hiptest
     bit_extract
     hcc_dialects
