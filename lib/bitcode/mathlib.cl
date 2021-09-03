@@ -762,3 +762,11 @@ EXPORT float CL_NAME2(shfl_down, f)(float var, uint delta) {
 int CL_NAME(group_all)(int pred) { return sub_group_all(pred); }
 int CL_NAME(group_any)(int pred) { return sub_group_any(pred); }
 ulong CL_NAME(group_ballot)(int pred) { return sub_group_reduce_add(pred ? (ulong)1 << get_sub_group_local_id() : 0); }
+
+
+long CL_NAME(double_as_longlong)(double x) {
+  return __builtin_astype(x, long);
+}
+double CL_NAME(longlong_as_double)(long x) {
+  return __builtin_astype(x, double);
+}

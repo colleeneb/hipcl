@@ -1472,3 +1472,18 @@ EXPORT int __any(int predicate);
 EXPORT uint64_t __ballot(int predicate);
 
 #endif
+
+#if defined(__HIP_DEVICE_COMPILE__)
+
+extern "C" {
+NON_OVLD int64_t GEN_NAME(double_as_longlong)(double x);
+NON_OVLD double GEN_NAME(longlong_as_double)(int64_t x);
+}
+EXPORT int64_t __double_as_longlong(double x) { return GEN_NAME(double_as_longlong)(x); }
+EXPORT double __longlong_as_double(int64_t x) { return GEN_NAME(longlong_as_double)(x); }
+
+#else
+EXPORT int64_t __double_as_longlong(double x);
+EXPORT double __longlong_as_double(int64_t x);
+#endif
+
